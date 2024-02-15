@@ -40,12 +40,8 @@ void main()
     pose[0].y = 10;
     CreatFruit();
 
-
-
-
-
-
-    for(int p = 0; p<tamanhoarray; p++){
+	int p;
+    for(p = 0; p<tamanhoarray; p++){
         pose[p].x=pose[0].x-(p*2);
         pose[p].y=pose[0].y;
     }
@@ -73,13 +69,14 @@ void CursorPosition(int x, int y){
 void CriarMapa(){
     //cria as barras de colisão superiores
     printf("%c", 201);
-    for(int i = 0; i<40; i++){
+    int i;
+    for(i = 0; i<40; i++){
         printf("%c%c", 205,205);
     };
     printf("%c\n", 187);
     ////////////////////////////////////////
 
-    for(int i = 1; i<20; i++){
+    for(i = 1; i<20; i++){
         CursorPosition(0, i);
         printf("%c", 186);
         CursorPosition(81, i);
@@ -91,8 +88,9 @@ void CriarMapa(){
 
     //cria as barras de colisão inferiores
     printf("\n%c", 200);
-    for(int i = 0; i<40; i++){
-        printf("%c%c", 205);
+    
+    for(i = 0; i<40; i++){
+        printf("%c%c", 205, 205);
     };
     printf("%c", 188);
     ////////////////////////////////////////
@@ -102,8 +100,8 @@ void CriarMapa(){
 void Atualizar(){
 
 
-
-    for(int p=0; p<tamanhoarray; p++){
+	int p;
+    for(p=0; p<tamanhoarray; p++){
         CursorPosition(pose[p].x, pose[p].y);
         printf(" ");
     }
@@ -113,14 +111,14 @@ void Atualizar(){
     Movimentar();
     VerificarMorte();
 
-    for(int p=0; p<tamanhoarray; p++){
+    for(p=0; p<tamanhoarray; p++){
         CursorPosition(pose[p].x, pose[p].y);
         printf("%c", 254);
     }
 
 
-
-    for(int i = 0; i < qntFrutas; i++){
+	int i;
+    for(i = 0; i < qntFrutas; i++){
         if(pose[0].x == fruits[i].x && pose[0].y == fruits[i].y){
             pontuation++;
             tamanhoarray++;
@@ -163,31 +161,31 @@ void Atualizar(){
 
 
 void Movimentar(){
-
-        for(int i = 0; kbhit(); i++){
+		int i;
+        for(i = 0; kbhit(); i++){
                 tecla = getch();
         }
         if(tecla == 'w'){
-
-            for(int i = tamanhoarray-1; i>0; i--){
+			
+            for(i = tamanhoarray-1; i>0; i--){
                 pose[i].x = pose[i-1].x;
                 pose[i].y =  pose[i-1].y;
             }
             pose[0].y--;
         }else if(tecla == 's'){
-            for(int i = tamanhoarray-1; i>0; i--){
+            for(i = tamanhoarray-1; i>0; i--){
                 pose[i].x = pose[i-1].x;
                 pose[i].y =  pose[i-1].y;
             }
             pose[0].y++;
         }else if(tecla == 'd'){
-            for(int i = tamanhoarray-1; i>0; i--){
+            for(i = tamanhoarray-1; i>0; i--){
                 pose[i].x = pose[i-1].x;
                 pose[i].y =  pose[i-1].y;
             }
             pose[0].x+=2;
         }else if(tecla == 'a'){
-            for(int i = tamanhoarray-1; i>0; i--){
+            for(i = tamanhoarray-1; i>0; i--){
                 pose[i].x = pose[i-1].x;
                 pose[i].y =  pose[i-1].y;
             }
@@ -200,7 +198,8 @@ void VerificarMorte(){
     if(pose[0].x <1 || pose[0].x >80 || pose[0].y<1 || pose[0].y>19){
         vivo = 0;
     }
-    for(int p = 1; p<tamanhoarray; p++){
+    int p;
+    for(p = 1; p<tamanhoarray; p++){
         if(pose[0].x == pose[p].x && pose[0].y == pose[p].y){
            vivo = 0;
         }
