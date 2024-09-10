@@ -26,36 +26,24 @@ struct positions *pose;
 struct positions *fruits;
 
 
-void main()
-{
-    CleanScreen();
-    oneTime = 1;
-    vivo = 1;
-    tamanhoarray = 1;
-    qntFrutas = 0;
-    pontuation = 0;
-    pose = (struct positions *) malloc(1*sizeof(struct positions));
-    fruits = (struct positions *) malloc(1*sizeof(struct positions));
-    pose[0].x = 20;
-    pose[0].y = 10;
-    CreatFruit();
 
-	int p;
-    for(p = 0; p<tamanhoarray; p++){
-        pose[p].x=pose[0].x-(p*2);
-        pose[p].y=pose[0].y;
+void VerificarMorte(){
+    if(pose[0].x <1 || pose[0].x >40 || pose[0].y<1 || pose[0].y>19){
+        vivo = 0;
     }
-    CriarMapa();
-    Atualizar();
-
+    int p;
+    for(p = 1; p<tamanhoarray; p++){
+        if(pose[0].x == pose[p].x && pose[0].y == pose[p].y){
+           vivo = 0;
+        }
+    }
 }
-
 void CreatFruit(){
     qntFrutas++;
     fruits = realloc(fruits,qntFrutas*sizeof(struct positions));
     srand(time(NULL));
 
-    fruits[qntFrutas-1].x = (2*(rand() % 39))+2;
+    fruits[qntFrutas-1].x = (2*(rand() % 14))+2;
     fruits[qntFrutas-1].y = (rand() % 18)+1;
 
 
@@ -67,37 +55,77 @@ void CursorPosition(int x, int y){
 
 
 void CriarMapa(){
-    //cria as barras de colisão superiores
+    //cria as barras de colisï¿½o superiores
     printf("%c", 201);
     int i;
-    for(i = 0; i<40; i++){
+    for(i = 0; i<20; i++){
         printf("%c%c", 205,205);
     };
     printf("%c\n", 187);
-    ////////////////////////////////////////
+    // ////////////////////////////////////////
 
     for(i = 1; i<20; i++){
         CursorPosition(0, i);
         printf("%c", 186);
-        CursorPosition(81, i);
+        CursorPosition(41, i);
         printf("%c", 186);
     }
 
 
 
 
-    //cria as barras de colisão inferiores
+    // //cria as barras de colisï¿½o inferiores
     printf("\n%c", 200);
     
-    for(i = 0; i<40; i++){
+    for(i = 0; i<20; i++){
         printf("%c%c", 205, 205);
     };
     printf("%c", 188);
-    ////////////////////////////////////////
+    // ////////////////////////////////////////
 }
 
+void Movimentar(){
+		int i;
+        for(i = 0; kbhit(); i++){
+                tecla = getch();
+        }
+        if(tecla == 'w'){
+			
+            for(i = tamanhoarray-1; i>0; i--){
+                pose[i].x = pose[i-1].x;
+                pose[i].y =  pose[i-1].y;
+            }
+            pose[0].y--;
+        }else if(tecla == 's'){
+            for(i = tamanhoarray-1; i>0; i--){
+                pose[i].x = pose[i-1].x;
+                pose[i].y =  pose[i-1].y;
+            }
+            pose[0].y++;
+        }else if(tecla == 'd'){
+            for(i = tamanhoarray-1; i>0; i--){
+                pose[i].x = pose[i-1].x;
+                pose[i].y =  pose[i-1].y;
+            }
+            pose[0].x+=2;
+        }else if(tecla == 'a'){
+            for(i = tamanhoarray-1; i>0; i--){
+                pose[i].x = pose[i-1].x;
+                pose[i].y =  pose[i-1].y;
+            }
+            pose[0].x-=2;
+        }
+}
 
-void Atualizar(){
+void CleanScreen(){
+    #ifdef __linux__
+        system("clear");
+    #elif _WIN32
+        system("cls");
+    #endif
+}
+
+int Atualizar(){
 
 
 	int p;
@@ -149,68 +177,38 @@ void Atualizar(){
     }else if(vivo == 0){
         CleanScreen();
         CursorPosition(0, 10);
-        printf("You is dead >:(\n\n\n\n\n   Pontuation: %d \n\n\n\n\n   Can you be better? Try again pressing any key\n\n\n\n\n\n\n\n\n\n", pontuation);
-        system("pause");
-        main();
+        printf("You is dead >:(\n\n\n\n\n   Pontuation: %d \n\\n\n\n\n\n\n\n\n\n\n", pontuation);
 
 
     }
+    return 0;
     /////////////////////////////
 }
 
 
 
-void Movimentar(){
-		int i;
-        for(i = 0; kbhit(); i++){
-                tecla = getch();
-        }
-        if(tecla == 'w'){
-			
-            for(i = tamanhoarray-1; i>0; i--){
-                pose[i].x = pose[i-1].x;
-                pose[i].y =  pose[i-1].y;
-            }
-            pose[0].y--;
-        }else if(tecla == 's'){
-            for(i = tamanhoarray-1; i>0; i--){
-                pose[i].x = pose[i-1].x;
-                pose[i].y =  pose[i-1].y;
-            }
-            pose[0].y++;
-        }else if(tecla == 'd'){
-            for(i = tamanhoarray-1; i>0; i--){
-                pose[i].x = pose[i-1].x;
-                pose[i].y =  pose[i-1].y;
-            }
-            pose[0].x+=2;
-        }else if(tecla == 'a'){
-            for(i = tamanhoarray-1; i>0; i--){
-                pose[i].x = pose[i-1].x;
-                pose[i].y =  pose[i-1].y;
-            }
-            pose[0].x-=2;
-        }
-}
 
+int main()
+{
+    CleanScreen();
+    oneTime = 1;
+    vivo = 1;
+    tamanhoarray = 1;
+    qntFrutas = 0;
+    pontuation = 0;
+    pose = (struct positions *) malloc(1*sizeof(struct positions));
+    fruits = (struct positions *) malloc(1*sizeof(struct positions));
+    pose[0].x = 20;
+    pose[0].y = 10;
+    CreatFruit();
 
-void VerificarMorte(){
-    if(pose[0].x <1 || pose[0].x >80 || pose[0].y<1 || pose[0].y>19){
-        vivo = 0;
+	int p;
+    for(p = 0; p<tamanhoarray; p++){
+        pose[p].x=pose[0].x-(p*2);
+        pose[p].y=pose[0].y;
     }
-    int p;
-    for(p = 1; p<tamanhoarray; p++){
-        if(pose[0].x == pose[p].x && pose[0].y == pose[p].y){
-           vivo = 0;
-        }
-    }
-}
+    CriarMapa();
+    while(Atualizar()){}
+    return 0;
 
-void CleanScreen(){
-    #ifdef __linux__
-        system("clear");
-    #elif _WIN32
-        system("cls");
-    #endif
 }
-
